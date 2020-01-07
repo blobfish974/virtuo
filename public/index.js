@@ -73,7 +73,7 @@ const rentals = [{
   'carId': '4afcc3a2-bbf4-44e8-b739-0179a6cd8b7d',
   'pickupDate': '2019-12-01',
   'returnDate': '2019-12-15',
-  'distance': 100,
+  'distance': 1000,
   'options': {
     'deductibleReduction': true
   },
@@ -163,8 +163,7 @@ console.log(rentals);
 console.log(actors);
 
 
-// console.log(rentals[0].price);
-// console.log(rentals[0].returnDate-rentals[0].pickupDate)
+// FUNCTION FOR STEP 1 
 function price(){
 	//var priceArray=[];
 	var aDay = 86400000;
@@ -180,11 +179,55 @@ function price(){
      	price=date_diff*cars[j].pricePerDay + rentals[i].distance*cars[j].pricePerKm;
      	rentals[i].price=price;
      	//priceArray.push(price);
-
 	}	
-	//console.log(priceArray)
+	//console.log(priceArray);
 }
-price()
+//price()
+
+
+// FUNCTION STEP 2
+function price_with_decrease(){
+	//var priceArray=[];
+	var aDay = 86400000;
+	var date_diff,pricePerDay,pricePerKm,price ;
+	for(var i= 0; i < rentals.length; i++)
+	{
+		var j=0;
+		while(rentals[i].carId!=cars[j].id)
+		{
+			j++;
+		}
+		date_diff = Math.floor((Date.parse(rentals[i].returnDate.replace(/-/g, '\/')) - Date.parse(rentals[i].pickupDate.replace(/-/g, '\/'))) / aDay);
+     	price=date_diff*cars[j].pricePerDay + rentals[i].distance*cars[j].pricePerKm;
+     	if(date_diff>1)
+     	{
+			if(date_diff>4)
+			{
+				if(date_diff>4)
+				{
+					
+					price=price*0.5;
+				}
+	     		else
+	     		{
+	     			price=price*0.7;
+				}
+			}
+     		else
+     		{
+     			price=price*0.9;
+     		}
+     	}
+     	rentals[i].price=price;
+     	rentals[i].price=price;
+     	//priceArray.push(price);
+	}	
+	//console.log(priceArray);
+}
+price_with_decrease()
+
+
+
 
 
 const test_rentals = [{
