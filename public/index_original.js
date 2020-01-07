@@ -73,7 +73,6 @@ const rentals = [{
   'carId': '4afcc3a2-bbf4-44e8-b739-0179a6cd8b7d',
   'pickupDate': '2019-12-01',
   'returnDate': '2019-12-15',
-  'distance': 100,
   'options': {
     'deductibleReduction': true
   },
@@ -161,55 +160,3 @@ const actors = [{
 console.log(cars);
 console.log(rentals);
 console.log(actors);
-
-
-// console.log(rentals[0].price);
-// console.log(rentals[0].returnDate-rentals[0].pickupDate)
-function price(){
-	//var priceArray=[];
-	var aDay = 86400000;
-	var date_diff,pricePerDay,pricePerKm,price ;
-	for(var i= 0; i < rentals.length; i++)
-	{
-		var j=0;
-		while(rentals[i].carId!=cars[j].id)
-		{
-			j++;
-		}
-		date_diff = Math.floor((Date.parse(rentals[i].returnDate.replace(/-/g, '\/')) - Date.parse(rentals[i].pickupDate.replace(/-/g, '\/'))) / aDay);
-     	price=date_diff*cars[j].pricePerDay + rentals[i].distance*cars[j].pricePerKm;
-     	rentals[i].price=price;
-     	//priceArray.push(price);
-
-	}	
-	//console.log(priceArray)
-}
-price()
-
-
-const test_rentals = [{
-  'id': '893a04a3-e447-41fe-beec-9a6bfff6fdb4',
-  'driver': {
-    'firstName': 'Roman',
-    'lastName': 'Frayssinet'
-  },
-  'carId': 'a9c1b91b-5e3d-4cec-a3cb-ef7eebb4892e',
-  'pickupDate': '2020-01-02',
-  'returnDate': '2020-01-02',
-  'distance': 100,
-  'options': {
-    'deductibleReduction': false
-  },
-  'price': 0,
-  'commission': {
-    'insurance': 0,
-    'treasury': 0,
-    'virtuo': 0
-  }
-}]
-const test_cars = [{
-  'id': 'a9c1b91b-5e3d-4cec-a3cb-ef7eebb4892e',
-  'name': 'fiat-500-x',
-  'pricePerDay': 36,
-  'pricePerKm': 0.10
-}]
