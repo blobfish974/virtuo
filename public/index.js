@@ -219,7 +219,6 @@ function price_with_decrease(){
      		}
      	}
      	rentals[i].price=price;
-     	rentals[i].price=price;
      	//priceArray.push(price);
 	}	
 	//console.log(priceArray);
@@ -227,6 +226,23 @@ function price_with_decrease(){
 price_with_decrease()
 
 
+// FUNCTION STEP 3
+function commission(){
+	//var priceArray=[];
+	var aDay = 86400000;
+	var total_commission,date_diff ;
+	for(var i= 0; i < rentals.length; i++)
+	{
+		total_commission=rentals[i].price*0.3;
+		rentals[i].commission.insurance=total_commission/2;
+		date_diff = Math.floor((Date.parse(rentals[i].returnDate.replace(/-/g, '\/')) - Date.parse(rentals[i].pickupDate.replace(/-/g, '\/'))) / aDay);
+		rentals[i].commission.treasury=1*(date_diff+1); //we add 1 because for example if someone rent a car 1 day the date difference will be 0
+		rentals[i].commission.virtuo=total_commission-(rentals[i].commission.treasury + rentals[i].commission.insurance);
+     	//priceArray.push(price);
+	}	
+	//console.log(priceArray);
+}
+commission()
 
 
 
