@@ -1,3 +1,6 @@
+Arthur TASSAN-MAZZOCCO
+IBO TD 6
+
 # VIRTUO
 
 > JavaScript workshop based on the french startup https://www.govirtuo.com
