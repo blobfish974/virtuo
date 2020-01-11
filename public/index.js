@@ -203,7 +203,7 @@ function price_with_decrease(){
      	{
 			if(date_diff>4)
 			{
-				if(date_diff>4)
+				if(date_diff>10)
 				{
 					
 					price=price*0.5;
@@ -252,36 +252,45 @@ function deductible(){
 			// maybe we should check here that the function price() was run 
 			date_diff = Math.floor((Date.parse(rentals[i].returnDate.replace(/-/g, '\/')) - Date.parse(rentals[i].pickupDate.replace(/-/g, '\/'))) / aDay);
 			rentals[i].price=rentals[i].price+(date_diff+1)*4;
-			console.log(rentals[i].price);
-
 		}
 	}	
 }
 deductible()
 
-const test_rentals = [{
-  'id': '893a04a3-e447-41fe-beec-9a6bfff6fdb4',
-  'driver': {
-    'firstName': 'Roman',
-    'lastName': 'Frayssinet'
-  },
-  'carId': 'a9c1b91b-5e3d-4cec-a3cb-ef7eebb4892e',
-  'pickupDate': '2020-01-02',
-  'returnDate': '2020-01-02',
-  'distance': 100,
-  'options': {
-    'deductibleReduction': false
-  },
-  'price': 0,
-  'commission': {
-    'insurance': 0,
-    'treasury': 0,
-    'virtuo': 0
-  }
-}]
-const test_cars = [{
-  'id': 'a9c1b91b-5e3d-4cec-a3cb-ef7eebb4892e',
-  'name': 'fiat-500-x',
-  'pricePerDay': 36,
-  'pricePerKm': 0.10
-}]
+// FUNCTION STEP 5
+function pay_actors(){
+	// previously we added the deductibleReduction directly to the rental price
+	// now we have to compute it again because we couldn't store its value in any particular key and we need it to compute virtuo credit
+	var aDay = 86400000;
+	var deductible_reduction,date_diff ;
+	for(var j=0; j < actors.length; j++)
+	{
+		//first let's find the corresponding rental index (in the rentals array) 
+		var i=0;
+		while(rentals[i].id!=actors[j].rentalId) // we browse the rentals array in order to find the corresponding rental
+		{
+			i++;
+		}
+		// we then compute the deductible reudction
+		deductible_reduction=0;
+		if(rentals[i].options.deductibleReduction==true)
+		{
+			date_diff = Math.floor((Date.parse(rentals[i].returnDate.replace(/-/g, '\/')) - Date.parse(rentals[i].pickupDate.replace(/-/g, '\/'))) / aDay);
+			deductible_reduction=(date_diff+1)*4;
+		}
+		//let's now compute the credits and debits:
+		//the driver is in index 0 of payment so:
+		actors[j].payment[0].amount=rentals[i].price; //we previsouly added the deductiblereduction to the price so we don't need to add it again
+		//the partner:
+		actors[j].payment[1].amount=rentals[i].price-(rentals[i].commission.insurance+rentals[i].commission.treasury+rentals[i].commission.virtuo);
+		//the insurance
+		actors[j].payment[2].amount=rentals[i].commission.insurance;
+		//the treasury
+		actors[j].payment[3].amount=rentals[i].commission.treasury;
+		//virtuo
+		actors[j].payment[4].amount=rentals[i].commission.virtuo + deductible_reduction;
+		
+	}
+	
+}
+pay_actors()
