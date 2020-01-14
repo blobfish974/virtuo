@@ -176,7 +176,7 @@ function price(){
 			j++;
 		}
 		date_diff = Math.floor((Date.parse(rentals[i].returnDate.replace(/-/g, '\/')) - Date.parse(rentals[i].pickupDate.replace(/-/g, '\/'))) / aDay);
-     	price=date_diff*cars[j].pricePerDay + rentals[i].distance*cars[j].pricePerKm;
+     	price=(date_diff+1)*cars[j].pricePerDay + rentals[i].distance*cars[j].pricePerKm;
      	rentals[i].price=price;
      	//priceArray.push(price);
 	}	
@@ -198,7 +198,7 @@ function price_with_decrease(){
 			j++;
 		}
 		date_diff = Math.floor((Date.parse(rentals[i].returnDate.replace(/-/g, '\/')) - Date.parse(rentals[i].pickupDate.replace(/-/g, '\/'))) / aDay);
-     	price=date_diff*cars[j].pricePerDay + rentals[i].distance*cars[j].pricePerKm;
+     	price=(date_diff+1)*cars[j].pricePerDay + rentals[i].distance*cars[j].pricePerKm;
      	if(date_diff>1)
      	{
 			if(date_diff>4)
